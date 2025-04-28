@@ -193,6 +193,43 @@ $flag = "userTable";
                 $all_books = "SELECT * FROM books ORDER BY title ASC, author ASC";
                 $default_result = $conn->query($all_books);
             }
+            if (isset($_POST['Analytics'])) {
+                $flag = "analytics";
+                
+                //analytics data for passing 
+                $analytics_data = [];
+            
+                $users_query = "SELECT COUNT(*) AS total_users FROM users";
+                $books_query = "SELECT SUM(copies_available) AS total_books FROM books";
+                $checked_out_query = "SELECT COUNT(*) AS total_checked_out FROM checked_out";
+            
+                $top_books_query = "
+                    SELECT books.title, COUNT(checked_out.book_id) AS checkout_count
+                    FROM checked_out
+                    JOIN books ON checked_out.book_id = books.book_id
+                    GROUP BY checked_out.book_id
+                    ORDER BY checkout_count DESC
+                    LIMIT 5
+                ";
+            
+                $users_result = $conn->query($users_query);
+                $books_result = $conn->query($books_query);
+                $checked_out_result = $conn->query($checked_out_query);
+                $top_books_result = $conn->query($top_books_query);
+            
+                if ($users_result && $books_result && $checked_out_result && $top_books_result) {
+                    $analytics_data['total_users'] = $users_result->fetch_assoc()['total_users'];
+                    $analytics_data['total_books'] = $books_result->fetch_assoc()['total_books'];
+                    $analytics_data['total_checked_out'] = $checked_out_result->fetch_assoc()['total_checked_out'];
+            
+                    $analytics_data['top_books'] = [];
+                    while ($row = $top_books_result->fetch_assoc()) {
+                        $analytics_data['top_books'][] = $row;
+                    }
+                }
+            
+                $default_result = $analytics_data;
+            }            
         }
 
         displayTable($default_result, $flag);
@@ -299,8 +336,94 @@ $flag = "userTable";
                     }
                     echo "</table>";
                 }
+                elseif ($flag == "analytics") {
+                    $total_books = $result['total_books'];
+                    $total_checked_out = $result['total_checked_out'];
+                    $checked_out_percent = $total_books > 0 ? round(($total_checked_out / $total_books) * 100, 2) : 0;
+                
+                    echo "<h2>Library Analytics</h2>";
+                
+                    echo "<table border='1'>";
+                    echo "<tr><th>Statistic</th><th>Value</th></tr>";
+                    echo "<tr><td>Total Users</td><td>{$result['total_users']}</td></tr>";
+                    echo "<tr><td>Total Books</td><td>{$total_books}</td></tr>";
+                    echo "<tr><td>Total Books Checked Out</td><td>{$total_checked_out} ({$checked_out_percent}%)</td></tr>";
+                    echo "</table>";
+                    echo "<div style='display: flex; justify-content: center; align-items: center; gap: 40px;'>";
+                    echo "<div>";
+                        echo "<h3>Top 5 Most Checked Out Books</h3>";
+                        echo "<canvas id='topBooksChart' width='400' height='400' style='width: 400px; height: 400px;'></canvas>";
+                    echo "</div>";
+                    echo "<div>";
+                        echo "<h3>Checked Out vs Available</h3>";
+                        echo "<canvas id='checkedOutPercentChart' width='400' height='400' style='width: 400px; height: 400px;'></canvas>";
+                    echo "</div>";
+                    echo "</div>";
+                
+                    // Pass PHP arrays to JavaScript
+                    echo "<script>
+                    const topBooksLabels = " . json_encode(array_column($result['top_books'], 'title')) . ";
+                    const topBooksData = " . json_encode(array_column($result['top_books'], 'checkout_count')) . ";
+                
+                    const checkedOutData = [$total_checked_out, " . ($total_books - $total_checked_out) . "];
+                    </script>";
+                }                
             }
         } 
     ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    //Script for the piegraphs
+    const ctx1 = document.getElementById('topBooksChart').getContext('2d');
+    const topBooksChart = new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: topBooksLabels,
+            datasets: [{
+                label: 'Checkouts',
+                data: topBooksData,
+                backgroundColor: [
+                    '#3498db', '#e74c3c', '#9b59b6', '#f1c40f', '#1abc9c'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Top 5 Most Checked Out Books'
+                }
+            }
+        }
+    });
+
+    const ctx2 = document.getElementById('checkedOutPercentChart').getContext('2d');
+    const checkedOutPercentChart = new Chart(ctx2, {
+        type: 'pie',
+        data: {
+            labels: ['Checked Out', 'Available'],
+            datasets: [{
+                data: checkedOutData,
+                backgroundColor: ['#2ecc71', '#e67e22'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Percentage of Books Checked Out'
+                }
+            }
+        }
+    });
+</script>
+
 </body>
 </html>
