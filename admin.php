@@ -1,5 +1,49 @@
 <?php
 session_start();
+
+$admin_password = '$2y$10$2NwvJU/R90S0TkykH4ECjOhPwR9YZj0qTLOYsI9tA0lD55v5fd02u'; // adminpassword
+
+// If the user hasn't logged in yet, show the login form
+if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_password'])) {
+        if (password_verify($_POST['admin_password'], $admin_password)) {
+            $_SESSION['is_admin'] = true;
+            header("Location: admin.php"); // reload after login
+            exit();
+        } else {
+            echo "Incorrect password. Please try again.";
+        }
+    }
+    ?>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Login</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul class="navbar">
+                    <li><a href="home.php">Home</a></li>
+                    <li><a href="admin.php">Librarian Managment Page</a></li>
+                    <li><a href="logout.php">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+        <h2>Admin Login</h2>
+        <form method="POST">
+            <input type="password" name="admin_password" placeholder="Enter admin password" required>
+            <button type="submit">Login</button>
+        </form>
+    </body>
+    </html>
+
+    <?php
+    exit(); //stop page so the rest of admin.php doesn't load yet
+}
+
 require 'db_connect.php';
 
 //check if user is logged in
@@ -8,11 +52,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$servername = "localhost"; //create initial connection
-$username = "root";
-$password = "";
-$database = "library_database"; 
-$conn = new mysqli($servername, $username, $password, $database);
 
 $flag = "userTable";
 ?>
@@ -142,6 +181,18 @@ $flag = "userTable";
                 $all_books = "SELECT * FROM books ORDER BY title ASC, author ASC";
                 $default_result = $conn->query($all_books);
             }
+
+            if (isset($_POST['updateCopies'])) {
+                $book_id = intval($_POST['book_id']);
+                $copies_available = intval($_POST['copies_available']);
+            
+                $query = "UPDATE books SET copies_available = $copies_available WHERE book_id = $book_id";
+                mysqli_query($conn, $query);
+
+                $flag = "modBookData";
+                $all_books = "SELECT * FROM books ORDER BY title ASC, author ASC";
+                $default_result = $conn->query($all_books);
+            }
         }
 
         displayTable($default_result, $flag);
@@ -235,10 +286,13 @@ $flag = "userTable";
                         echo "<td>{$row['length']}</td>";
                         echo "<td>{$row['genre']}</td>";
                         echo "<td>{$row['image']}</td>"; // echo "<td><img src='{$row['image']}'></td>"; -> replace with to display images
-                        echo "<td>{$row['copies_available']}</td>";
+                        echo "<td><form method='POST'>
+                        <input type='hidden' name='book_id' value='{$row['book_id']}'>
+                            <input type='number' name='copies_available' value='{$row['copies_available']}'>
+                            <button type='submit' name='updateCopies'>Save Change</button>
+                        </form></td>";
                         echo "<td><form method='POST'>
                                     <input type='hidden' name='book_id' value='{$row['book_id']}'>
-                                    <button type='submit' name='editBook'>Edit</button>
                                     <button type='submit' name='deleteBook'>Delete</button>
                         </form></td>";
                         echo "</tr>";
@@ -246,8 +300,7 @@ $flag = "userTable";
                     echo "</table>";
                 }
             }
-        }
-    
+        } 
     ?>
 </body>
 </html>
