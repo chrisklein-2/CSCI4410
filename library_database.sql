@@ -28,6 +28,18 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `book_reviews` (
+  `review_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `book_id` INT(11) NOT NULL,
+  `user_id` INT(11) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `content` TEXT NOT NULL,
+  `review_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`review_id`),
+  FOREIGN KEY (`book_id`) REFERENCES `books`(`book_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE
+);
+
 -- Table structure for table `checked_out`
 CREATE TABLE `checked_out` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -42,7 +54,7 @@ CREATE TABLE `checked_out` (
   CONSTRAINT `checked_out_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table `users`
+-- To populate table `users`
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
 (1, 'jamietest', 'jamietest@test.com', '$2y$10$Ufu/lnvO3613FE4Lapnfj.0eUSkduuHUQLckpsVYaKzRKf5TC0oZG'),
 (2, 'usertest', 'usertest@testing.com', '$2y$10$5/ZfutWCCemhYpnOjroG..Mz02nhXJqVzosOyTGmBorgWfInwJqhW'),
@@ -52,7 +64,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
 (6, 'daisy456', 'daisy456@example.com', '$2y$10$GxCz6zX1Db26sSChFZz7OeLzXReMfN7iOHgG9MtxbHPYt6UuW3VKq'),
 (7, 'erictest', 'erictest@mail.com', '$2y$10$YhXoX3eI4nHTsy9aIXpxq.YE2gwbHtAHlWnm3Izr3fG06cchLMrlm');
 
--- Dumping data for table `books`
+-- To populate table `books`
 INSERT INTO `books` ( `book_id`, `title`, `author`, `description`, `length`, `genre`, `image`,`copies_available`) VALUES
 (1, 'A Game Of Thrones', 'George R. R. Martin', 'The first book in A Song of Ice and Fire', 720, 'Fantasy', 'https://m.media-amazon.com/images/I/714ExofeKJL._AC_UF1000,1000_QL80_.jpg', 1),
 (2, 'A Clash of Kings', 'George R. R. Martin', 'The second book in A Song of Ice and Fire', 1040, 'Fantasy', 'https://m.media-amazon.com/images/I/71R9pRtC6AL._AC_UF1000,1000_QL80_.jpg', 3),
@@ -79,3 +91,16 @@ INSERT INTO `books` ( `book_id`, `title`, `author`, `description`, `length`, `ge
 (23, 'Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', 'A thought-provoking journey through the history of human evolution', 498, 'History', 'https://m.media-amazon.com/images/I/713jIoMO3UL._AC_UF1000,1000_QL80_.jpg', 4),
 (24, 'The Name of the Wind', 'Patrick Rothfuss', 'A high fantasy novel about a magically gifted young man', 662, 'Fantasy', 'https://m.media-amazon.com/images/I/81RjzKnQOEL._AC_UF1000,1000_QL80_.jpg', 3);
 COMMIT;
+
+-- To populate reviews 
+INSERT INTO `book_reviews` (`book_id`, `user_id`, `title`, `content`) VALUES
+(1, 1, 'An Epic Start', 'Absolutely loved the world-building. Took a bit to get into but totally worth it.'),
+(1, 2, 'Complex but Brilliant', 'A bit slow at first but the characters and plot are phenomenal. Highly recommend!'),
+(2, 1, 'Bigger and Better', 'The stakes are higher, and I couldn’t put it down. Great follow-up.'),
+(3, 3, 'Masterpiece', 'The Red Wedding... I have no words. This book was intense and amazing.'),
+(3, 4, 'So many twists!', 'The emotional rollercoaster in this book broke me. 10/10.'),
+(4, 2, 'Slightly Slower', 'Not as exciting as the previous ones, but still a must-read.'),
+(5, 1, 'Back to Form', 'Dragons, politics, betrayals... everything you want from this series.'),
+(5, 3, 'Loved it', 'It felt like the story really expanded. Some slow parts but overall great.'),
+(6, 4, 'Mind-blowing Sci-Fi', 'Dune is unlike anything else. The themes, the depth, the setting — legendary.'),
+(6, 2, 'A bit heavy but worth it', 'Took some time to understand everything, but what a story. Beautifully written.');
