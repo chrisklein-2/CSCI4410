@@ -197,4 +197,13 @@ body {
   .navbar a:hover {
     color: #f1c40f;
   }
-  
+
+  #captchaImage{
+    width: 90px;
+    padding: 10px;
+    padding-bottom: 0px;
+    height: 30px;
+    font-size: 24px;
+    text-decoration:line-through;
+    border: #21618c 3px solid;
+  }  
