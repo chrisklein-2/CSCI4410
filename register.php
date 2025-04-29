@@ -63,9 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
     <title>Register</title>
 </head>
-<body>
+<body onload="generate()">
     <header>
         <nav>
             <ul class="navbar">
@@ -81,13 +82,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (isset($error)) : ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        <form action="register.php" method="post">
+
+        <form action="register.php" method="post" onsubmit="return printmsg();">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username" required><br>
+
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required><br>
+
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required><br>
+
+            <div>
+                <input type="text" id="submit" placeholder="Enter code" required>
+                <div id="captchaImage"></div>
+                <button type="button" onclick="generate()">Refresh</button>
+            </div>
+            <p id="result"></p>
+
             <button type="submit" class="button">Register</button>
         </form>
     </div>
