@@ -1,0 +1,100 @@
+.section {
+  // promo
+  &.promo {
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: auto;
+    min-height: 668px;
+    height: calc(100vh - 72px);
+    @include media-breakpoint-up(lg) {
+      height: calc(100vh - 72px);
+    }
+  }
+  &-contact {
+    .title {
+      @include rfs($font-size-base * 2.85);
+    }
+  }
+  &-promo {
+    padding: 100px 0;
+    background-color: rgba($primary, 0.35);
+
+    .btn {
+      min-width: 175px;
+    }
+  }
+}
+
+.promo {
+  margin-top: calc(20% + 50px);
+  &-content {
+    margin-top: -20%;
+  }
+
+  &-title {
+    @include rfs($font-size-base * 3.85);
+  }
+  &-text {
+    @include rfs($font-size-base * 1.4377);
+  }
+
+  &-cta {
+    &.btn {
+      min-width: 187px;
+    }
+  }
+}
+.hero {
+  &-section {
+    background-repeat: no-repeat;
+    margin-top: -95px;
+
+    @include media-breakpoint-up(lg) {
+      height: 100vh;
+    }
+  }
+  &-image--wrapper {
+    @extend.mt-5;
+    align-self: center;
+    max-width: 100%;
+    @include media-breakpoint-up(lg) {
+      max-width: 600px;
+      margin-top: calc(20% + 100px) !important;
+    }
+    img {
+      border-radius: 10px;
+      &:after {
+        content: "";
+        height: inherit;
+        width: inherit;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background-color: rgba($primary, 0.5);
+        border-radius: 10px;
+      }
+      &:before {
+        content: "";
+        height: inherit;
+        width: inherit;
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: rgba($primary, 0.5);
+        border-radius: 10px;
+      }
+    }
+  }
+}
+//HospitalManagementSystem/Assets/Images/
+.hero--bg-pattern {
+  // background: url(../Images/hero-bg-pattern.jpg) no-repeat;
+    background-size: cover;
+    background-position: bottom 89% left;
+    background-blend-mode: multiply;
+    background-color: #61ebe754;
+
+  @include media-breakpoint-down(md) {
+    background-image: unset;
+  }
+}

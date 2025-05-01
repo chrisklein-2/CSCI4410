@@ -1,0 +1,8 @@
+
+
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import './base/boostrap-config' ,'./base/default';
+
+@import './components/banner', './components/main' ,'./components/nav', './components/sidebar';
+
+@import './layout/main';

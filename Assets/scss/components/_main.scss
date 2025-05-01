@@ -1,0 +1,60 @@
+$primary:       $green !default;
+$secondary:     $gray-600 !default;
+.form-outline {
+    width: 100%;
+    display: flex;
+    flex-flow: column-reverse;
+}
+.navbar-brand{
+    margin-bottom: 30px;
+    display: flex;
+}
+.logo{
+    &-text{
+        color:$primary;
+        font-weight: 700;
+        font-size: 34px;
+        margin-left: 20px;
+    }
+}
+.signin{
+    width: 100%;
+    height: 100vh;
+    &-form{
+        height: 100%;
+        padding: 20px;
+        width: 50%;
+        display: flex;
+        flex-flow: column;
+        align-items: flex-start;
+        margin-left: 50%;
+    }
+    &-img{
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+    &-content{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex    ;
+        align-items: flex-start;
+        flex-flow: row;
+    }
+}
+section{
+    .signin{
+        height: 92vh;
+    }
+}
+.img-holder{
+    width: 50%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    figure{
+        height: 100%;
+    }
+}
+

@@ -1,0 +1,94 @@
+.nav {
+  &bar {
+    &-brand {
+      margin-right: 0;
+    }
+  }
+
+  &-link {
+    color: $body-color;
+    font-size: $font-size-base * 1.6;
+    padding-left: $spacer !important;
+    padding-right: $spacer !important;
+
+    @include media-breakpoint-up(lg) {
+      font-size: $font-size-base * 1.125;
+      font-weight: 500;
+    }
+  }
+
+  &-action {
+    font-size: $font-size-base * 1.2;
+
+    a.btn {
+      font-size: $font-size-base * 1.2;
+
+      @include media-breakpoint-up(lg) {
+        font-size: $font-size-base * 0.875;
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      border-top: 1px solid #dae0ed;
+      margin-top: 1rem;
+      padding-top: 1rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+      font-size: $font-size-base * 0.875;
+    }
+  }
+  // hamburger
+  &bar {
+    background-color: $white;
+
+    &-toggler {
+      &:focus {
+        outline: none;
+      }
+
+      &-icon {
+        i {
+          font-size: 2rem;
+          color: red;
+        }
+      }
+    }
+    //collapse
+    &-collapse {
+      @include media-breakpoint-down(md) {
+        position: fixed;
+        top: 78px;
+        left: 0;
+        height: calc(100% - 72px);
+        width: 100%;
+        background-color: $white;
+        z-index: 999;
+        transition: transform 0.3s ease;
+        transform: translateX(100%);
+        background-color: $light;
+      }
+
+      &.show {
+        @include media-breakpoint-down(md) {
+          transform: translateX(0);
+        }
+      }
+    }
+
+    &-top {
+      a {
+        font-size: $font-size-base - 0.125;
+      }
+    }
+
+    &.sticky {
+      .navbar-collapse {
+        @include media-breakpoint-down(md) {
+          top: 69px;
+          height: calc(100% - 69px);
+        }
+      }
+    }
+  }
+}

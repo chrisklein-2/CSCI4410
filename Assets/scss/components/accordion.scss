@@ -1,0 +1,28 @@
+﻿.faqs {
+    .ri-add-line {
+        &:before {
+            content: "\f0fb";
+        }
+    }
+
+    .collapsed {
+        .ri-add-line {
+
+            &:before {
+                content: "\ea11";
+            }
+        }
+    }
+
+   
+
+    &-header {
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
+
+

@@ -1,0 +1,14 @@
+.faqs .ri-add-line:before {
+  content: "\f0fb";
+}
+.faqs .collapsed .ri-add-line:before {
+  content: "\ea11";
+}
+.faqs-header {
+  cursor: pointer;
+}
+.faqs-header:hover {
+  opacity: 0.8;
+}
+
+/*# sourceMappingURL=accordion.css.map */

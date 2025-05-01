@@ -7,18 +7,17 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
+
+$servername = "localhost"; //create initial connection
+$username = "root";
+$password = "";
+$database = "library_database"; 
+$conn = new mysqli($servername, $username, $password, $database);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Dashboard</title>
 
-</head>
-<body>
+     
+<?php include 'backend/header-b.php'; ?>
     <header>
         <nav>
             <ul class="navbar">
@@ -29,7 +28,123 @@ if (!isset($_SESSION['user_id'])) {
         </nav>
     </header>
 
+
+    <div class="container-fluid display-table">
+        <div class="row display-table-row">
+           
+           <?php  include 'sidebar.php'?>
+           
+            <div class="col-md-10 col-sm-11 display-table-cell v-align dashboard-main">
+                <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
+                <div class="row">
+                <?php  include 'backend/top-header.php'?>
+                </div>
+                <div class="user-dashboard">
+                    <h3 class="mt-5 mb-5">Welcome back,  <?php echo htmlspecialchars($firstname); ?></h3>
+                    <div class="row column1">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="full counter_section margin_bottom_30 yellow_bg">
+                               <a href="dashboard-patient.php" class="overlay"></a>
+                             <div class="counter-info">
+                             <div class="counter_icon">
+                                 <div> 
+                                    <i class="fa fa-user"></i>
+                                 </div>
+                              </div>
+                              <div class="counter_no">
+                                 <div>
+                                    <p class="total_no">1</p>
+                                    
+                                 </div>
+                              </div>
+                            </div>
+                            <p class="head_counter">Total Books</p>
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                           <div class="full counter_section margin_bottom_30 blue1_bg">
+                              <div class="counter-info">
+                              <div class="counter_icon">
+                                 <div> 
+                                 <i class="fa fa-calendar"></i>
+                                 </div>
+                              </div>
+                              <div class="counter_no">
+                                 <div>
+                                    <p class="total_no">1</p>
+                                   
+                                 </div>
+                              </div>
+                              </div>
+                              <p class="head_counter">Total Genre</p>
+                           </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                           <div class="full counter_section margin_bottom_30 green_bg">
+                              <div class="counter-info">
+                              <div class="counter_icon">
+                                 <div> 
+                                 <i class="fa fa-user"></i>
+                                 </div>
+                              </div>
+                              <div class="counter_no">
+                                 <div>
+                                    <p class="total_no">1</p>
+                                </div>
+                                </div>
+                              </div>
+                            <p class="head_counter">Total </p>
+                           </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                           <div class="full counter_section margin_bottom_30 red_bg">
+                              <div class="counter-info">
+                              <div class="counter_icon">
+                                 <div> 
+                                 <i class="fa fa-user"></i>
+                                 </div>
+                              </div>
+                              <div class="counter_no">
+                                 <div>
+                                    <p class="total_no">1</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="head_counter">Total User</p>
+                           </div>
+                        </div>
+                     </div>
+                    <div class="row">
+                    <div class="chart-container">   
+                       <div class="card px-5 py-2">
+                       <canvas id="ageChart" width="500" height="500"></canvas>
+                       </div>
+                       <div class="card px-5 py-2">
+                       <canvas id="genderChart" width="500" height="500" ></canvas>
+                       </div>
+                    </div>
+
+                    </div>
+                
+                    </div>
+                    <script>
+        
     <h1>Dashboard</h1>
+
+<form method="POST">
+    <input type="text" name="search" placeholder="Search books...">
+    <button type="submit">Search</button>
+</form>
+
+<br>
+
+<form method='POST'>
+    <input type='hidden' name='userCheckedOut'>
+    <button type='submit' name='userCheckedOut'>View My Checked Out Books</button>
+</form>
+
+<br>
 
 <?php
     $all_books = "SELECT * FROM books ORDER BY title ASC, author ASC"; //sql query
@@ -37,7 +152,6 @@ if (!isset($_SESSION['user_id'])) {
     $flag = "normDisplay";
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
         if (isset($_POST['search'])) {
             $search = htmlspecialchars($_POST['search']);
             $search_sql = "SELECT * FROM books WHERE title LIKE '%$search%' OR author LIKE '%$search%' OR genre LIKE '%$search%'ORDER BY title ASC, author ASC";
@@ -91,43 +205,14 @@ if (!isset($_SESSION['user_id'])) {
             $flag = "userCheckOutDisplay";
             $default_result = $user_checked_out_result;
         }
-
-    
-        if (isset($_POST['reviews'])) {
-            $book_id = $_POST['book_id'];
-        
-            // Get reviews for the selected book
-            $view_review_sql = "SELECT b.title, b.content, b.review_time, u.username FROM book_reviews b JOIN users u ON b.user_id = u.user_id
-            WHERE b.book_id = $book_id";
-            $view_review_sql_result = $conn->query($view_review_sql);
-            $flag = "userReviewDisplay";
-            $default_result = $view_review_sql_result;
-        }
-
-        if (isset($_POST['addReview'])){
-            $book_id = $_POST['book_id'];
-            $user_id = $_SESSION['user_id'];
-            $title = $_POST['review_title'];
-            $content = $_POST['review_content'];
-
-            $stmt = $conn->prepare("INSERT INTO book_reviews (book_id, user_id, title, content) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("iiss", $book_id, $user_id, $title, $content);
-            $stmt->execute();
-
-            $view_review_sql = "SELECT b.title, b.content, b.review_time, u.username FROM book_reviews b JOIN users u ON b.user_id = u.user_id
-            WHERE b.book_id = $book_id";
-            $view_review_sql_result = $conn->query($view_review_sql);
-            $flag = "userReviewDisplay";
-            $default_result = $view_review_sql_result; 
-        }
     }
+
     displayTable($default_result, $flag);
 ?>
 
 <?php
-    function displayTable($result, $flag) { //im sorry about this function
+    function displayTable($result, $flag) {
         if ($result->num_rows > 0 && $flag == "normDisplay") {
-            showSearch();
             echo "<table border='1'>"; //table start
 
             //table heading
@@ -140,7 +225,7 @@ if (!isset($_SESSION['user_id'])) {
             echo "<th>" . "Image" . "</th>";
             echo "<th>" . "Copies Available" . "</th>";
             echo "<th>" . "Status" . "</th>";
-            echo "<th>" . "Action" . "</th>";
+            echo "<th>" . "Checkout" . "</th>";
             echo "<tr>";
 
             while ($row = mysqli_fetch_assoc($result)) { 
@@ -159,7 +244,6 @@ if (!isset($_SESSION['user_id'])) {
                     echo "<td><form method='POST'>
                                 <input type='hidden' name='book_id' value='{$row['book_id']}'>
                                 <button type='submit' name='checkout'>Checkout</button>
-                                <button type='submit' name='reviews'>View Reviews</button>
                     </form></td>";
                 } else {
                     echo "<td>All copies checked out!</td>";
@@ -169,7 +253,6 @@ if (!isset($_SESSION['user_id'])) {
             }
             echo "</table>";
         } elseif($result->num_rows > 0 && $flag == "userCheckOutDisplay"){
-            showSearch();
             echo "<table border='1'>";
             echo "<tr>";
             echo "<th>" . "Title" . "</th>";
@@ -198,51 +281,12 @@ if (!isset($_SESSION['user_id'])) {
                 echo "</tr>";
             }
             echo "</table>";
-        } elseif($flag == "userReviewDisplay"){
-            echo "<h3>Post a Review:</h3>
-            <form method='POST'>
-                <input type='hidden' name='flag' value='submitReview'>
-                <input type='hidden' name='book_id' value='" . $_POST['book_id'] . "'>
-                <label>Title:<br><input type='text' name='review_title' required></label><br><br>
-                <label>Content:<br><textarea name='review_content' rows='4' cols='50' required></textarea></label><br><br>
-                <button type='submit' name='addReview'>Submit Review</button>
-            </form>
-            ";
-
-            if ($result->num_rows > 0) {
-                echo "<h3>Reviews for this book:</h3>";
-                echo "<ul>";
-                while ($review = $result->fetch_assoc()) {
-                    echo "<li>";
-                    echo "<strong>" . htmlspecialchars($review['title']) . "</strong><br>";
-                    echo "Posted by <strong>" . $review['username'] . "</strong> at " . $review['review_time'] . "<br>";
-                    echo htmlspecialchars($review['content']);
-                    echo "</li><br>";
-                }
-                echo "</ul>";
-            } else {
-                echo "<p>No reviews yet for this book.</p>";
-            }
-        }else {
+        } else {
             echo "You currently have no checked out books!";
         }
     }
-
-    function showSearch(){
-        echo "<form method='POST'>
-            <input type='text' name='search' placeholder='Search books...'>
-            <button type='submit'>Search</button>
-        </form>
-
-        <br>
-
-        <form method='POST'>
-            <input type='hidden' name='userCheckedOut'>
-            <button type='submit' name='userCheckedOut'>View My Checked Out Books</button>
-        </form><br>";
-    }
-
 	$conn->close();
 ?>
-</body>
-</html>
+
+<?php include 'backend/footer-b.php'; ?>
+

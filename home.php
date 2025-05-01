@@ -34,8 +34,8 @@ if (isset($_SESSION['user_id'])) {
 
    
     <div style="display:flex;justify-content:center;gap:20px;">
-        <a href="login.php"><input type="button" value="Login"  class="checkout-btn"></a>
-        <a href="register.php"><input type="button" value="Register" class="checkout-btn"></a>
+    <a href="login.php" class="checkout-btn">Login</a>
+    <a href="register.php" class="checkout-btn">Register</a>
     </div>
 </div>
 

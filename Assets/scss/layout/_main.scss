@@ -1,0 +1,122 @@
+.wrapper{
+    height:100%;
+}
+.main {
+    margin-left: 250px;
+    flex-grow: 1;
+    padding: 5.5rem 3rem 2rem;
+}
+
+.sidebar.collapse:not(.show) ~.main{
+   margin-left:0;
+}
+
+
+.page-layout {
+    display: flex;
+    flex-grow: 1;
+    height:100%
+}
+.main-container {
+     padding-top:3.5rem;
+    flex-grow: 1;
+    min-height:100vh;
+}
+
+.main-content-area{
+    background-color:#fcfcfc;
+    
+   padding:0;
+}
+
+.page {
+    --padding: 2.858rem;
+    flex-grow: 1;
+    height: 100vh;
+    overflow: auto;
+
+    &--has-tabs {
+        .page-body {
+            padding-top: 1rem;
+        }
+    }
+
+    &-header {
+        padding: 1.5rem 0rem;
+        position: sticky;
+        top: 73px;
+        z-index: $zindex-dropdown;
+        backdrop-filter: blur(.5rem);
+        background: rgba(248, 248, 248, .75);
+
+        &:after {
+            content: "";
+            border-bottom: 1px solid #E0E0E0;
+            position: absolute;
+            bottom: 0;
+            left: var(--padding);
+            right: var(--padding);
+        }
+
+        &__top {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        &__main {
+            display: flex;
+           
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-flow: column;
+
+            @include media-breakpoint-up(lg) {
+                flex-flow: row;
+                align-items: center;
+            }
+        }
+
+        &--has-back-btn {
+            .page-title-group {
+                display: flex;
+                align-items: center;
+
+                .btn {
+                    margin-right: 1rem;
+                    border-radius: 10rem;
+                    background-color: transparent;
+                    border: 0;
+                }
+            }
+        }
+    }
+
+    &-toolbar {
+        display: flex;
+        align-items: center;
+
+        > * + * {
+            margin-left: .5rem;
+        }
+    }
+
+    &-title {
+        margin: 0;
+    }
+
+    &-body {
+        padding: 2.5rem var(--padding) var(--padding) var(--padding);
+    }
+
+    &-wrapper {
+        padding: 0 1rem;
+    }
+
+    &-content {
+        @extend .p-3;
+        border-radius: 0.4rem;
+        background-color: var(--white);
+        margin-bottom: 1rem;
+    }
+}

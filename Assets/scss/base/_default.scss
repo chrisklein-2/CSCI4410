@@ -1,0 +1,18 @@
+html, body {
+    height: 100%;
+}
+ul {
+    padding: 0;
+}
+
+[class^="ri-"], [class*=" ri-"] {
+    color: $icon-color;
+}
+
+pre {
+    font-size:$font-size-base * 0.875;
+}
+
+.lightbox {
+    display: none;
+}

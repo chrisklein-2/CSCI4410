@@ -1,0 +1,35 @@
+﻿.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: $zindex-sticky;
+  &.is-sticky {
+    background-color: #fff;
+  }
+}
+.navbar {
+  background-color: transparent;
+  &-expanded-lg {
+    .navbar-toggler {
+      @include media-breakpoint-up(lg) {
+        display: none;
+      }
+    }
+  }
+  &-collapse {
+    flex-basis: auto;
+    display: flex !important;
+    flex-flow: column;
+    @include media-breakpoint-up(lg) {
+      flex-flow: row;
+      justify-content: space-between;
+    }
+  }
+  &-nav {
+    flex-direction: column;
+    @include media-breakpoint-up(lg) {
+      flex-direction: row;
+      flex-grow: 1;
+    }
+  }
+}

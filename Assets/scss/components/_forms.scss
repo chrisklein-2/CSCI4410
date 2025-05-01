@@ -1,0 +1,21 @@
+.form-control {
+    height: var(--form-input-height);
+
+    &-sm {
+        height: calc(2rem + 2px);
+    }
+
+    &.input-validation-error {
+        border-left-color: $red;
+    }
+}
+label:empty {
+    display: none;
+}
+
+textarea.form-control {
+    min-height: 120px;
+}
+.custom-control-label {
+    cursor: pointer;
+}

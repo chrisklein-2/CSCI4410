@@ -1,0 +1,39 @@
+.list {
+  &-session-tags {
+    position: sticky;
+    top: 0px;
+    display: flex;
+    flex-flow: row;
+    overflow: auto;
+    white-space: nowrap;
+    margin: 0.5rem 1.5rem;
+    @include media-breakpoint-up(md) {
+      flex-flow: column;
+      margin: unset;
+    }
+    .list-group {
+      &-item {
+        &.active {
+          background-color: rgba($primary, 0.35);
+          .list-link {
+            color: var(--primary);
+          }
+        }
+      }
+    }
+  }
+  &-link {
+    color: rgba(00, 0, 0, 0.85);
+  }
+}
+.session {
+  &-section {
+    padding: 1rem 1.5rem;
+  }
+  &-item {
+    margin-bottom: 1rem;
+  }
+}
+.contact-list {
+  @include rfs($font-size-base * 1.385);
+}
