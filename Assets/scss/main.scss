@@ -1,8 +1,15 @@
 
+@use "sass:map";
+@use "sass:math";
+@use "../node_modules/bootstrap/scss/bootstrap" as *;
 
-@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+
 @import './base/boostrap-config' ,'./base/default';
+@import'./helpers/typo','./helpers/utilities','./helpers/variables';
 
 @import './components/banner', './components/main' ,'./components/nav', './components/sidebar';
 
 @import './layout/main';
+@import './pages/dashboard';
+

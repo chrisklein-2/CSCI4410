@@ -1,7 +1,18 @@
 //colors
+@use "sass:color";
 $icon-color: #5c6378;
 
 :root {
   --form-input-height: calc(2.375rem + 2px);
 }
 $dark-blue: #1a2057;
+
+.logo{
+  background: white;
+    padding: 20px;
+    border-radius: 50%;
+}
+
+$r: color.channel($myColor, "red");
+$g: color.channel($myColor, "green");
+$b: color.channel($myColor, "blue");

@@ -5,7 +5,8 @@ $password = "";             // Your MySQL password (default is empty for XAMPP)
 $dbname = "library_database"; // Your database name
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$port = 3306;
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 // Check connection
 if ($conn->connect_error) {

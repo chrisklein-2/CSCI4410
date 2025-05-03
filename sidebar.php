@@ -9,6 +9,8 @@
                     <ul>
                         <li class="active"><a href="dashboard.php"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Overview</span></a></li>
                   
+                        <li><a href="admin.php"><i class="fa fa-user" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Admin role</span></a></li>
+                        <li><a href="books.php"><i class="fa fa-book" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Books</span></a></li>
                         <li><a href="dashboard-users.php"><i class="fa fa-user" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Users</span></a></li>
                         <li><a href="#"><i class="fa fa-cog" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Setting</span></a></li>
                     </ul><i class="fa-solid fa-user-doctor"></i>

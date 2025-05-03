@@ -1,0 +1,32 @@
+.banner{
+
+    height: 88vh;
+
+    background-color: $primary;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &-container{
+        text-align: center;
+    }
+    background-image: url(../../../../OLA2/assets/img/background_in_space.webp);
+    background-color: #282A35;
+    background-repeat: repeat;
+    background-position: right bottom;
+
+
+}
+
+.image{
+    &-wrapper{
+        img{
+            height: 200px;
+            width: 200px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+
+        }
+    }
+}

@@ -1,0 +1,11 @@
+@import "../../node_modules/bootstrap/scss/buttons";
+
+.btn-primary{
+    @include button-variant($primary, $primary);
+}
+.btn{
+    &-contact-me{
+        background-color: $primary;
+        color: $white;
+    }
+}

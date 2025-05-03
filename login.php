@@ -1,38 +1,32 @@
 <?php
 session_start();
-include 'db_connect.php'; //include your database connection
+include 'db_connect.php'; // your DB connection file
 
-//check if the user is already logged in
+// Check if already logged in
 if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php"); //redirect to user dashboard
+    header("Location: dashboard.php");
     exit();
 }
 
-//initialize error message
 $error = '';
 
-//handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    //prepare SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT user_id, password FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT user_id, username, password FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    //check if a user was found
     if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
+        $user = $result->fetch_assoc();
 
-        //verify the password
-        if (password_verify($password, $row['password'])) {
-            session_regenerate_id(true); //regenerate session ID for security
-            $_SESSION['user_id'] = $row['user_id']; //store user ID in session
-
+        if (password_verify($password, $user['password'])) {
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['username'] = $user['username']; // ✅ set username now
             header("Location: dashboard.php");
-            
             exit();
         } else {
             $error = "Invalid username or password.";

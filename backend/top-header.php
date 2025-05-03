@@ -1,56 +1,25 @@
-
 <?php
-
-
-
-// Include the database connection
-include 'db_connect.php';
-// Check if the user is logged in (assuming the username is stored in the session after login)
-if (isset($_SESSION['username'])) {
-    $username = $_SESSION['username']; // Username from session
-
-    // Prepare SQL to fetch user details
-    $sql = "SELECT username, first_name, last_name, email, phone_number FROM users WHERE username = ?";
-    $stmt = $conn->prepare($sql);
-
-    if ($stmt) {
-        $stmt->bind_param("s", $username); // Bind the username to the query
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        // Check if the username exists in the database
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-            $userName = $user['username'];
-            $firstname = $user['first_name'];
-            $lastname = $user['last_name'];
-            $email = $user['email'];
-            $phoneNumber = $user['phone_number'];
-          
-        } else {
-            // Default values if no user is found
-            $userName = "Unknown User";
-            $firstname = "N/A";
-            $lastname = "N/A";
-            $email = "N/A";
-            $phoneNumber = "N/A";
-            $address = "N/A";
-        }
-
-        $stmt->close();
-    } else {
-        // Handle SQL statement preparation error
-        die("Error preparing SQL statement: " . $conn->error);
-    }
-} else {
-    // If no session found, set default values
-    $userName = "Guest";
-    $firstname = "N/A";
-    $lastname = "N/A";
-    $email = "N/A";
-    $phoneNumber = "N/A";
-    $address = "N/A";
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+
+include 'db_connect.php'; // Ensure $conn is set
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$username = 'Guest';
+
+$stmt = $conn->prepare("SELECT username FROM users WHERE user_id = ?");
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$stmt->bind_result($fetchedUsername);
+if ($stmt->fetch()) {
+    $username = $fetchedUsername;
+}
+$stmt->close();
 ?>
 
 <header class="dashboard-header">
@@ -78,12 +47,29 @@ if (isset($_SESSION['username'])) {
                             
                         </div>
                         <div class="col-md-5">
-                            <div class="header-rightside">
+                             <div class="header-rightside">
+                                 <a class="btn btn-default text-decoration-none" href="logout.php">Log Out <i class="fa fa-sign-out"></i></a>
+                            </div>
+                                 <!-- <div class="header-rightside">
                                 <ul class="list-inline header-top pull-right">
+                                    <!-- Example single danger button -->
+                                <!-- <div class="btn-group">
+                                <div class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <?= htmlspecialchars($username) ?>
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="#"><?= htmlspecialchars($username) ?></a></li>
+                                    <li><a class="dropdown-item" href="profile.php">View Profile</a></li>
+                                    <li><a class="dropdown-item" href="logout.php">Log Out <i class="fa fa-sign-out"></i></a></li>
+                                </ul>
+                                </div>
+                                </div>
                                     
                                     <li class="dropdown right">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        <span><?php echo htmlspecialchars($userName); ?></span>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span><?= htmlspecialchars($username) ?></span>
                                             <b class="caret"></b></a>
                                         <ul class="dropdown-menu">
                                             <li>
@@ -92,7 +78,7 @@ if (isset($_SESSION['username'])) {
                                                 
                                                 <div class="divider">
                                                 </div>
-                                                <a href="" class="dropdown-item view  "><?php echo htmlspecialchars($firstname . ' ' . $lastname); ?></a>
+                                                <a href="" class="dropdown-item view  "><?= htmlspecialchars($username) ?></a>
                                                 <a href="profile.php" class="dropdown-item view  ">View Profile</a>
                                                 <a class="dropdown-item" href="logout.php"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
                                             </div>
@@ -100,6 +86,6 @@ if (isset($_SESSION['username'])) {
                                         </ul>
                                     </li>
                                 </ul>
-                            </div>
+                            </div>  -->
                         </div>
                     </header>

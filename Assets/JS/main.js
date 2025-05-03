@@ -1,27 +1,69 @@
-function searchTable() {
-    const input = document.getElementById("searchInput");
-    const filter = input.value.toLowerCase();
-    const table = document.getElementById("patientTable");
-    const tr = table.getElementsByTagName("tr");
+$(document).ready(function () {
 
-    for (let i = 1; i < tr.length; i++) { // Start from 1 to skip header
-        const td = tr[i].getElementsByTagName("td");
-        let rowContainsSearch = false;
 
-        for (let j = 0; j < td.length; j++) {
-            if (td[j]) {
-                const txtValue = td[j].textContent || td[j].innerText;
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                    rowContainsSearch = true;
-                    break;
-                }
-            }
+    var link = $('.list-cv--menu .list-link');
+    var header = $('#mainHeader');
+    var sidebar= $('.sidebar-sticky');
+    var bannerHeight = $('.banner.banner--main').outerHeight();
+        var sidebarHeight = $('.sidebar-sticky').outerHeight();
+    var headerHeight = header.outerHeight();
+
+
+
+    // Smooth scrolling to section on menu link click
+    link.on('click', function (e) {
+        e.preventDefault();
+        var target = $($(this).attr('href'));
+        var scrollHeight = headerHeight;
+
+        if ($(this).parents('li').is(':first-child')) {
+            scrollHeight += bannerHeight + aboutUsHeight;
         }
 
-        if (rowContainsSearch) {
-            tr[i].style.display = "";
+        $('html, body').animate({
+            scrollTop: target.offset().top - scrollHeight
+        }, 600);
+
+        $('.list-group-item').removeClass('active');
+        $(this).parents('.list-group-item').addClass('active');
+    });
+
+    // Scroll event to update navigation
+    $(window).on('scroll', function () {
+        toggleStickyHeader();
+        updateActiveNav();
+    });
+
+    function updateActiveNav() {
+        var scrollTop = $(window).scrollTop();
+        $('.article-item').each(function () {
+            var id = $(this).attr('id');
+            var offset = $(this).offset().top - headerHeight;
+            var height = $(this).height();
+
+            if (scrollTop >= offset && scrollTop < offset + height) {
+                link.parents('li').removeClass('active');
+                $('.list-cv--menu').find(`[data-scroll="${id}"]`).parents('li').addClass('active');
+            }
+        });
+    }
+
+    function toggleStickyHeader() {
+        const scrollTop = $(window).scrollTop();
+        
+        if (scrollTop >= 100 && scrollTop <= (bannerHeight - 10)) {
+            header.addClass('is-sticky');
+            sidebar.removeClass('is-sticky'); // Ensure sidebar is not sticky when header is
+        } else if (scrollTop >= bannerHeight) {
+            header.removeClass('is-sticky');
+            sidebar.addClass('is-sticky');
         } else {
-            tr[i].style.display = "none";
+            header.removeClass('is-sticky');
+            sidebar.removeClass('is-sticky'); // Reset both when below threshold
         }
     }
-}
+    
+});
+
+
+

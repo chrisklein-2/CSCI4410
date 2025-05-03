@@ -57,16 +57,19 @@
         justify-content: space-between;
     }
     &-sidebar{
-        background-color: #048581;
+        background-color: $primary;
         padding: 0;
         height: 100vh;
 
         .logo{
+            margin: 10px auto;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px 10px;
             border-bottom: 1px solid rgba(255,255,255,0.2);
+            width: max-content;
+            height: 75px;            
             img{
                 border-radius: 50%;
             }
@@ -155,11 +158,11 @@
 //counter
 .counter_section{
     margin-bottom: 20px;
-    border: 1px solid #048581;
+    border: 1px solid $primary;
     border-radius: 5px;
     padding: 20px;
-    background-color: rgba(#048581,0.02);
-    color: #048581;
+    background-color: rgba($primary,0.02);
+    color: $primary;
     display: flex;
     justify-content: space-between;
     flex-flow: column;
@@ -186,3 +189,53 @@
 .btn{
     white-space: no-wrap;
 }
+
+//dashboard 
+.btn{
+    white-space: nowrap;
+  }
+  body>.display-table-row{
+    position: relative;
+  }
+  .dashboard-footer{
+    margin-left:280px;
+  }
+  .dashboard-sidebar{
+    position: absolute;
+    left:0;
+    width: 250px;
+  }
+  .dashboard-main{
+    margin-left:250px;
+    left:0;
+  }
+  .chart-container{
+          display:flex;
+          justify-content:flex-start;
+          gap:100px;
+      }
+      .chart{
+          width:100%;
+          height:600px;
+      }
+
+  .form-check-input[type=radio]:checked:after {
+      border-radius: 50%;
+      width: .625rem;
+      height: .625rem;
+      border-color: $primary;
+      background-color: $primary;
+      transition: border-color;
+      transform: translate(-50%, -50%);
+      position: absolute;
+      left: 15.5%;
+      top: 50%;
+    }
+    .form-outline .form-control{
+      border: 1px solid #ccc;
+
+    }
+    .form-outline .form-control::placeholder{
+      color:  #ccc;
+      
+    }

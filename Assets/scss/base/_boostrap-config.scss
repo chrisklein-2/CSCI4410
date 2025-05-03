@@ -1,5 +1,5 @@
 /* customization of Bootstrap */
-
+@use "sass:color";
 //font
 $font-body: "Montserrat", sans-serif;
 $font-heading: "Montserrat", sans-serif;
@@ -8,6 +8,7 @@ $font-family-hd: $font-heading;
 
 //colors
 $primary: #00c8e3;
+$myColor: #3498db; 
 
 $success: #88c381;
 $dark: #3d2966;
@@ -84,3 +85,12 @@ $form-group-margin-bottom: 1.75rem !default;
 $white: rgba(255, 255, 255, 1);
 
 $font-size-lg: 1rem;
+
+
+
+$icon-color: #000 !default; // or whatever value you want
+
+
+$r: color.channel($myColor, "red");
+$g: color.channel($myColor, "green");
+$b: color.channel($myColor, "blue");
