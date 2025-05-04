@@ -9,16 +9,16 @@ if (isset($_SESSION['user_id'])) {
 }
 
 $servername = "localhost"; //create initial connection
-$username = "root";
-$password = "";
-$database = "library_database"; 
-$conn = new mysqli($servername, $username, $password, $database);
+$username   = "root";
+$password   = "";
+$database   = "library_database";
+$conn       = new mysqli($servername, $username, $password, $database);
 
 //form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //get the form values and sanitize them
     $username = trim($_POST['username']);
-    $email = trim($_POST['email']);
+    $email    = trim($_POST['email']);
     $password = $_POST['password'];
 
     $username = mysqli_real_escape_string($conn, $username);
@@ -60,48 +60,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-    <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+  <title>Register</title>
 </head>
 <body onload="generate()">
-    <header>
-        <nav>
-            <ul class="navbar">
-                <li><a href="home.php">Home</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="register.php">Register</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <nav>
+      <ul class="navbar">
+        <li><a href="home.php">Home</a></li>
+        <li><a href="login.php">Login</a></li>
+        <li><a href="register.php">Register</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <div class="container">
-        <h1>Register</h1>
-        <?php if (isset($error)) : ?>
-            <div class="error"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
+  
+  <div class="auth-page">
 
-        <form action="register.php" method="post" onsubmit="return printmsg();">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br>
+    <aside class="banner">
+      <h2>Join our community</h2>
+      <h1>GET STARTED</h1>
+      <p>Create your account and start borrowing books today.</p>
+    </aside>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br>
+    
+    <div class="auth-container">
+      <h2>Register</h2>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
+      <?php if (isset($error)) : ?>
+        <div class="error"><?php echo htmlspecialchars($error); ?></div>
+      <?php endif; ?>
 
-            <div>
-                <input type="text" id="submit" placeholder="Enter code" required>
-                <div id="captchaImage"></div>
-                <button type="button" onclick="generate()">Refresh</button>
-            </div>
-            <p id="result"></p>
+      <form action="register.php" method="post" onsubmit="return printmsg();">
+        <label>
+          Username:
+          <input type="text" id="username" name="username" required>
+        </label>
 
-            <button type="submit" class="button">Register</button>
-        </form>
+        <label>
+          Email:
+          <input type="email" id="email" name="email" required>
+        </label>
+
+        <label>
+          Password:
+          <input type="password" id="password" name="password" required>
+        </label>
+
+        <div>
+          <input type="text" id="submit" placeholder="Enter code" required>
+          <div id="captchaImage"></div>
+          <button type="button" onclick="generate()">Refresh</button>
+        </div>
+        <p id="result"></p>
+
+        <button type="submit" class="button">Register</button>
+      </form>
+
+      <div class="auth-links">
+        <a href="login.php">Already have an account? Login</a>
+      </div>
     </div>
+    <!-- /.auth-container -->
+  </div>
+  <!-- /.auth-page -->
+
 </body>
 </html>

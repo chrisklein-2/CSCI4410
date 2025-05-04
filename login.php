@@ -21,11 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-
         if (password_verify($password, $user['password'])) {
             session_regenerate_id(true);
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['username'] = $user['username']; // ✅ set username now
+            $_SESSION['user_id']  = $user['user_id'];
+            $_SESSION['username'] = $user['username'];
             header("Location: dashboard.php");
             exit();
         } else {
@@ -40,34 +39,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Login</title>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul class="navbar">
-                <li><a href="home.php">Home</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="register.php">Register</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <nav>
+      <ul class="navbar">
+        <li><a href="home.php">Home</a></li>
+        <li><a href="login.php">Login</a></li>
+        <li><a href="register.php">Register</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <div class="auth-page">
+    
+    <aside class="banner">
+      <h2>Nice to see you again</h2>
+      <h1>WELCOME BACK</h1>
+      <p>Borrow, review and discover your favourite books in one place.</p>
+    </aside>
+
+   
     <div class="container">
-        <h1>Login</h1>
-        <?php if (!empty($error)) : ?>
-            <div class="error"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
-        <form action="login.php" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit" class="button">Login</button>
-        </form>
+      <h1>Login</h1>
+
+      <?php if (!empty($error)) : ?>
+        <div class="error"><?php echo htmlspecialchars($error); ?></div>
+      <?php endif; ?>
+
+      <form action="login.php" method="post">
+        <label>
+          Username:
+          <input type="text" id="username" name="username" required>
+        </label>
+        <label>
+          Password:
+          <input type="password" id="password" name="password" required>
+        </label>
+        <button type="submit" class="button">Login</button>
+      </form>
+
+      <div class="auth-links">
+        <a href="register.php">Don’t have an account? Register</a>
+      </div>
     </div>
+  </div>
+  <!-- /.auth-page -->
+
 </body>
 </html>
