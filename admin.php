@@ -371,7 +371,8 @@ $flag = "userTable";
                         echo "<td>{$row['description']}</td>";
                         echo "<td>{$row['length']}</td>";
                         echo "<td>{$row['genre']}</td>";
-                        echo "<td>{$row['image']}</td>"; // echo "<td><img src='{$row['image']}'></td>"; -> replace with to display images
+                        $imageSrc = htmlspecialchars($row['image'], ENT_QUOTES);
+                        echo "<td><img src='{$imageSrc}' width='50' height='100'></td>";
                         echo "<td><form method='POST'>
                         <input type='hidden' name='book_id' value='{$row['book_id']}'>
                             <input type='number' name='copies_available' value='{$row['copies_available']}'>
