@@ -3,15 +3,21 @@ session_start();
 
 $admin_password = '$2y$10$2NwvJU/R90S0TkykH4ECjOhPwR9YZj0qTLOYsI9tA0lD55v5fd02u'; // adminpassword
 
-// If the user hasn't logged in yet, show the login form
+// Save the referring page
+if (!isset($_SESSION['redirect_from']) && isset($_SERVER['HTTP_REFERER'])) {
+    $_SESSION['redirect_from'] = $_SERVER['HTTP_REFERER'];
+}
+
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_password'])) {
         if (password_verify($_POST['admin_password'], $admin_password)) {
             $_SESSION['is_admin'] = true;
-            header("Location: admin.php"); // reload after login
+            $redirectUrl = $_SESSION['redirect_from'] ?? 'admin.php';
+            unset($_SESSION['redirect_from']);
+            header("Location: $redirectUrl");
             exit();
         } else {
-            echo "Incorrect password. Please try again.";
+            $error = "Incorrect password. Please try again.";
         }
     }
     ?>
@@ -20,38 +26,81 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin Login</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css" rel="stylesheet">
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
+            .signin {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            .signin-content {
+                background: white;
+                border-radius: 10px;
+                padding: 30px;
+                box-shadow: 0 0 15px rgba(0,0,0,0.1);
+                display: flex;
+                align-items: center;
+                max-width: 800px;
+            }
+            .signin-form {
+                width: 100%;
+            }
+            .img-holder {
+                margin-right: 30px;
+            }
+            .img-holder img {
+                max-width: 300px;
+            }
+            .logo-text {
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body>
-        <header>
-            <nav>
-                <ul class="navbar">
-                    <li><a href="home.php">Home</a></li>
-                    <li><a href="admin.php">Librarian Managment Page</a></li>
-                    <li><a href="logout.php">Logout</a></li>
-                </ul>
-            </nav>
-        </header>
-        <h2>Admin Login</h2>
-        <form method="POST">
-            <input type="password" name="admin_password" placeholder="Enter admin password" required>
-            <button type="submit">Login</button>
-        </form>
+    <section class="signin">
+        <div class="signin-content">
+            <div class="img-holder">
+                <figure><img src="./Assets/Images/admin.jpg" class="img signin-img" alt="sign in image"></figure>
+            </div>
+
+            <form method="POST" class="signin-form">
+                <a class="navbar-brand mb-3 d-block" href="index.php">
+                    <img src="./Assets/Images/book.gif" width="50"> 
+                    <span class="logo-text text-primary">Library</span>
+                </a>
+                <h3 class="mb-3">Admin Sign In</h3>
+                <?php if (isset($error)) echo '<div class="alert alert-danger">' . $error . '</div>'; ?>
+
+                <div class="form-group mb-4">
+                    <label class="form-label" for="admin_password">Admin Password</label>
+                    <input type="password" id="admin_password" name="admin_password" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+                <a href="index.php" class="link">Return to Main Page</a>
+            </form>
+        </div>
+    </section>
     </body>
     </html>
-
     <?php
-    exit(); //stop page so the rest of admin.php doesn't load yet
+    exit();
 }
 
 require 'db_connect.php';
 
-//check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
-
 
 $flag = "userTable";
 ?>

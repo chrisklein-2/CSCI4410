@@ -62,20 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Custom CSS -->
+   <link rel="stylesheet" href="./Assets/css/frontend.css">
   <link rel="stylesheet" href="style.css">
   <script src="script.js"></script>
   <title>Register</title>
 </head>
 <body onload="generate()">
-  <header>
-    <nav>
-      <ul class="navbar">
-        <li><a href="home.php">Home</a></li>
-        <li><a href="login.php">Login</a></li>
-        <li><a href="register.php">Register</a></li>
-      </ul>
-    </nav>
-  </header>
+  
 
   
   <div class="auth-page">
@@ -97,21 +91,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <form action="register.php" method="post" onsubmit="return printmsg();">
         <label>
           Username:
-          <input type="text" id="username" name="username" required>
+          <input type="text" id="username" name="username" class="form-control" required>
         </label>
 
         <label>
           Email:
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email"  class="form-control" required>
         </label>
 
         <label>
           Password:
-          <input type="password" id="password" name="password" required>
+          <input type="password" id="password" name="password" class="form-control" required>
         </label>
 
         <div>
-          <input type="text" id="submit" placeholder="Enter code" required>
+          <label for="captchacode"> Recaptcha Code</label>
+          <input type="text" id="submit" placeholder="Enter code"  class="form-control"name="captchacode" required>
           <div id="captchaImage"></div>
           <button type="button" onclick="generate()">Refresh</button>
         </div>

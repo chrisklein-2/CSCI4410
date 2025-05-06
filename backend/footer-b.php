@@ -47,7 +47,7 @@ if (basename($_SERVER['PHP_SELF']) === 'patient_info.php') {
                 'copy', 'csv', 'excel', 'pdf', 'print'
               ],
               paging: true,
-              searching: true,
+              searching: false,
               ordering: true,
               lengthChange: true
             });

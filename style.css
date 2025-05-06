@@ -106,8 +106,7 @@ tr:hover {
 
 /* Authentication container (login/register) */
 .auth-container {
-    max-width: 500px;
-    margin: 80px auto;
+    max-width: 50%;
     padding: 40px;
     background: #ffffff;
     border-radius: 12px;
@@ -125,7 +124,7 @@ tr:hover {
     margin: 15px 0 8px;
     font-weight: bold;
 }
-.auth-container input[type="text"],
+.auth-container input[type="text"],.form-control,
 .auth-container input[type="password"] {
     width: 100%;
     padding: 12px;
@@ -186,7 +185,7 @@ tr:hover {
     width: 90px;
     padding: 10px;
     padding-bottom: 0px;
-    height: 30px;
+    height: 55px;
     font-size: 24px;
     text-decoration: line-through;
     border: #21618c 3px solid;
@@ -223,8 +222,8 @@ tr:hover {
 }
 .auth-page .auth-container {
     flex: 1;
-    max-width: 480px;
-    margin: auto;
+    max-width: 50%;
+    margin: auto 50px;
     padding: 60px 40px;
     box-sizing: border-box;
     background: #fff;

@@ -1,27 +1,25 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    include 'db_connect.php'; // Ensure $conn is set
 
-include 'db_connect.php'; // Ensure $conn is set
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: login.php");
+        exit();
+    }
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+    $username = 'Guest';
 
-$username = 'Guest';
-
-$stmt = $conn->prepare("SELECT username FROM users WHERE user_id = ?");
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$stmt->bind_result($fetchedUsername);
-if ($stmt->fetch()) {
-    $username = $fetchedUsername;
-}
-$stmt->close();
+    $stmt = $conn->prepare("SELECT username FROM users WHERE user_id = ?");
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $stmt->bind_result($fetchedUsername);
+    if ($stmt->fetch()) {
+        $username = $fetchedUsername;
+    }
+    $stmt->close();
 ?>
-
 <header class="dashboard-header">
                         <div class="col-md-7">
                             <nav class="navbar-default pull-left">

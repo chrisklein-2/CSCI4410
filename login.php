@@ -44,16 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="style.css">
   <title>Login</title>
 </head>
-<body>
-  <header>
-    <nav>
-      <ul class="navbar">
-        <li><a href="home.php">Home</a></li>
-        <li><a href="login.php">Login</a></li>
-        <li><a href="register.php">Register</a></li>
-      </ul>
-    </nav>
-  </header>
+<body>  
 
   <div class="auth-page">
     
@@ -74,11 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <form action="login.php" method="post">
         <label>
           Username:
-          <input type="text" id="username" name="username" required>
+          <input type="text" id="username" name="username" class="form-control" required>
         </label>
         <label>
           Password:
-          <input type="password" id="password" name="password" required>
+          <input type="password" id="password" name="password" class="form-control" required>
         </label>
         <button type="submit" class="button">Login</button>
       </form>
